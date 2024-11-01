@@ -47,7 +47,7 @@ class Plugin extends PluginBase
             'description' => 'rezgui.blogviews::lang.plugin.description',
             'author'      => 'Yacine REZGUI',
             'icon'        => 'icon-signal',
-            'homepage'    => 'https://github.com/rezgui/blogviews'
+            'homepage'    => 'https://github.com/rezgui/wn-blogviews-plugin'
         ];
     }
 

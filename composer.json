@@ -1,5 +1,28 @@
 {
+  "name": "rezgui/wn-blogviews-plugin",
+  "type": "winter-plugin",
+  "description": "Extension to the Winter.Blog plugin by add views tracking to blog posts",
+  "keywords": ["winter", "cms", "blog", "post", "extension", "plugin"],
+  "license": "MIT",
+  "authors": [
+      {
+        "name": "Art Gek",
+        "email": "alchemistt@ukr.net"
+      },
+      {
+          "name": "Yacine REZGUI",
+          "email": "yacine.rezgui@gmail.com",
+          "role": "Maintainer"
+      }      
+  ],
   "require": {
-    "piwik/device-detector": "^3.12"
+      "piwik/device-detector": "^3.12"
+  },
+  "extra": {
+      "installer-name": "blogviews",
+      "winter": {
+          "name": "Blogviews",
+          "categories": ["Blog"]
+      }
   }
 }

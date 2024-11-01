@@ -1,17 +1,19 @@
-<?php namespace Vdomah\BlogViews;
+<?php
+
+namespace Rezgui\BlogViews;
 
 use Db;
 use Cookie;
 use Event;
 use Session;
 use System\Classes\PluginBase;
-use Rainlab\Blog\Components\Post as PostComponent;
-use Rainlab\Blog\Models\Post as PostModel;
+use Winter\Blog\Components\Post as PostComponent;
+use Winter\Blog\Models\Post as PostModel;
 use Cms\Classes\Controller;
 use DeviceDetector\Parser\Bot as BotParser;
-use Vdomah\BlogViews\Components\Popular;
-use Vdomah\BlogViews\Components\Views;
-use Vdomah\BlogViews\Models\Settings;
+use Rezgui\BlogViews\Components\Popular;
+use Rezgui\BlogViews\Components\Views;
+use Rezgui\BlogViews\Models\Settings;
 
 /**
  * BlogViews Plugin Information File
@@ -26,12 +28,12 @@ class Plugin extends PluginBase
     /**
      * @var array   Require the RainLab.Blog plugin
      */
-    public $require = ['RainLab.Blog'];
+    public $require = ['Winter.Blog'];
 
     /**
      * @var string   Table to store post views count
      */
-    public $table_views = 'vdomah_blogviews_views';
+    public $table_views = 'rezgui_blogviews_views';
 
     /**
      * Returns information about this plugin.
@@ -41,11 +43,11 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'vdomah.blogviews::lang.plugin.name',
-            'description' => 'vdomah.blogviews::lang.plugin.description',
-            'author'      => 'Art Gek',
+            'name'        => 'rezgui.blogviews::lang.plugin.name',
+            'description' => 'rezgui.blogviews::lang.plugin.description',
+            'author'      => 'Yacine REZGUI',
             'icon'        => 'icon-signal',
-            'homepage'    => 'https://github.com/vdomah/blogviews'
+            'homepage'    => 'https://github.com/rezgui/blogviews'
         ];
     }
 
@@ -64,7 +66,7 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-        PostComponent::extend(function($component) {
+        PostComponent::extend(function ($component) {
             if ($this->app->runningInBackend() || !Controller::getController()) {
                 return;
             }
@@ -92,9 +94,9 @@ class Plugin extends PluginBase
             return true;
         });
 
-        PostModel::extend(function($model) {
-            $model->addDynamicMethod('getViewsAttribute', function() use ($model) {
-                $obj = Db::table('vdomah_blogviews_views')
+        PostModel::extend(function ($model) {
+            $model->addDynamicMethod('getViewsAttribute', function () use ($model) {
+                $obj = Db::table('rezgui_blogviews_views')
                     ->where('post_id', $model->getKey())->first();
 
                 $out = is_null($obj) ? 0 : $obj->views;
@@ -161,7 +163,6 @@ class Plugin extends PluginBase
                 $slugValueFromUrl = array_key_exists($routeParamName, $routerParameters)
                     ? $routerParameters[$routeParamName]
                     : null;
-
             }
         }
 
@@ -199,10 +200,10 @@ class Plugin extends PluginBase
     {
         $cookName = self::POST_VIEWED . '-' . $post->getKey();
 
-        if (Cookie::get( $cookName, 0 ) == 0) {
+        if (Cookie::get($cookName, 0) == 0) {
             $this->setViews($post);
 
-            Cookie::queue( $cookName, '1', 525000 );
+            Cookie::queue($cookName, '1', 525000);
         }
     }
 
@@ -210,9 +211,9 @@ class Plugin extends PluginBase
     {
         return [
             'config' => [
-                'label'       => 'vdomah.blogviews::lang.plugin.name',
-                'description' => 'vdomah.blogviews::lang.plugin.description_settings',
-                'category'    => 'rainlab.blog::lang.blog.menu_label',
+                'label'       => 'rezgui.blogviews::lang.plugin.name',
+                'description' => 'rezgui.blogviews::lang.plugin.description_settings',
+                'category'    => 'winter.blog::lang.blog.menu_label',
                 'icon'        => 'icon-signal',
                 'class'       => Settings::class,
                 'order'       => 501,

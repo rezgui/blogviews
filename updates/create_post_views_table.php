@@ -7,7 +7,7 @@ class CreatePostViewsTable extends Migration
 {
     public function up()
     {
-        Schema::create('vdomah_blogviews_views', function($table)
+        Schema::create('rezgui_blogviews_views', function($table)
         {
             $table->engine = 'InnoDB';
             $table->integer('views');
@@ -18,6 +18,6 @@ class CreatePostViewsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('vdomah_blogviews_views');
+        Schema::dropIfExists('rezgui_blogviews_views');
     }
 }

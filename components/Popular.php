@@ -1,14 +1,16 @@
-<?php namespace Vdomah\BlogViews\Components;
+<?php
+
+namespace Rezgui\BlogViews\Components;
 
 use Cms\Classes\ComponentBase;
-use Rainlab\Blog\Models\Post as BlogPost;
-use Rainlab\Blog\Models\Category as BlogCategory;
+use Winter\Blog\Models\Post as BlogPost;
+use Winter\Blog\Models\Category as BlogCategory;
 use Cms\Classes\Page;
 
 class Popular extends ComponentBase
 {
     /**
-     * @var Rainlab\Blog\Models\Post The post model used for display.
+     * @var Winter\Blog\Models\Post The post model used for display.
      */
     public $posts;
 
@@ -33,8 +35,8 @@ class Popular extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'vdomah.blogviews::lang.component.popular_name',
-            'description' => 'vdomah.blogviews::lang.component.popular_description'
+            'name'        => 'rezgui.blogviews::lang.component.popular_name',
+            'description' => 'rezgui.blogviews::lang.component.popular_description'
         ];
     }
 
@@ -42,27 +44,27 @@ class Popular extends ComponentBase
     {
         return [
             'category' => [
-                'title' => 'vdomah.blogviews::lang.properties.category',
+                'title' => 'rezgui.blogviews::lang.properties.category',
                 'type' => 'dropdown',
                 'default' => '{{ :category }}',
             ],
             'postsLimit' => [
-                'title'             => 'vdomah.blogviews::lang.properties.posts_limit',
+                'title'             => 'rezgui.blogviews::lang.properties.posts_limit',
                 'type'              => 'string',
                 'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'vdomah.blogviews::lang.properties.posts_limit_validation',
+                'validationMessage' => 'rezgui.blogviews::lang.properties.posts_limit_validation',
                 'default'           => '3',
             ],
             'noPostsMessage' => [
-                'title'        => 'vdomah.blogviews::lang.properties.posts_no_posts',
-                'description'  => 'vdomah.blogviews::lang.properties.posts_no_posts_description',
+                'title'        => 'rezgui.blogviews::lang.properties.posts_no_posts',
+                'description'  => 'rezgui.blogviews::lang.properties.posts_no_posts_description',
                 'type'         => 'string',
                 'default'      => 'No posts found',
                 'showExternalParam' => false
             ],
             'postPage' => [
-                'title'       => 'vdomah.blogviews::lang.properties.posts_post',
-                'description' => 'vdomah.blogviews::lang.properties.posts_post_description',
+                'title'       => 'rezgui.blogviews::lang.properties.posts_post',
+                'description' => 'rezgui.blogviews::lang.properties.posts_post_description',
                 'type'        => 'dropdown',
                 'default'     => 'blog/post',
                 'group'       => 'Links',
@@ -74,8 +76,8 @@ class Popular extends ComponentBase
     {
         return array_merge(
             [
-                null => e(trans('vdomah.blogviews::lang.properties.all_option')),
-                0 => e(trans('vdomah.blogviews::lang.properties.no_option'))
+                null => e(trans('rezgui.blogviews::lang.properties.all_option')),
+                0 => e(trans('rezgui.blogviews::lang.properties.no_option'))
             ],
             BlogCategory::lists('name', 'slug')
         );
@@ -94,8 +96,7 @@ class Popular extends ComponentBase
          * List all the posts
          */
         $query = BlogPost::isPublished()
-            ->leftJoin('vdomah_blogviews_views as pv', 'pv.post_id', '=', 'rainlab_blog_posts.id')
-        ;
+            ->leftJoin('rezgui_blogviews_views as pv', 'pv.post_id', '=', 'winter_blog_posts.id');
 
         $category_slug = $this->property('category');
         if ((is_string($category_slug) && strlen($category_slug) == 0) || $category_slug === false)
@@ -105,18 +106,17 @@ class Popular extends ComponentBase
             if ($category_slug == 0)
                 $query = $query->has('categories', '=', 0);
             elseif ($category_slug > 0)
-                $query->whereHas('categories', function($q) use ($category_slug) {
+                $query->whereHas('categories', function ($q) use ($category_slug) {
                     $q->where('slug', $category_slug);
                 });
         }
 
         $query = $query->orderBy('views', 'DESC')
-            ->limit($this->postsLimit)
-        ;
+            ->limit($this->postsLimit);
 
         $posts = $query->get();
 
-        $posts->each(function($post) {
+        $posts->each(function ($post) {
             $post->setUrl($this->postPage, $this->controller);
         });
 

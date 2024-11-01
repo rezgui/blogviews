@@ -29,3 +29,5 @@
     - "Both Cookie and Session methods available to prevent doubletracking"
 1.0.14:
     - "Fix: bot detection if no HTTP_USER_AGENT is present in request"
+1.0.15:
+    - "Convert & update for WinterCMS"   

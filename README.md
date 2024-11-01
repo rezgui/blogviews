@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="blogviews.jpeg?raw=true" alt="blogviews Logo" width="100%" />
+</p>
+
 # Blog Views Extension
 This plugin is an extension to the [Winter.Blog](https://github.com/wintercms/wn-blog-plugin) plugin. This extension add views tracking to blog posts and allows to add views counter to a post and display popular posts widget.
 
